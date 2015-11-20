@@ -9,9 +9,9 @@ Edit this file, and the bot will squash your changes :)
 
 -->
 
-[![Build Status](https://travis-ci.org/PolymerElements/paper-progress.svg?branch=master)](https://travis-ci.org/PolymerElements/paper-progress)
+[![Build Status](https://travis-ci.org/PolymerElements/paper-linear-progress.svg?branch=master)](https://travis-ci.org/PolymerElements/paper-linear-progress)
 
-_[Demo and API Docs](https://elements.polymer-project.org/elements/paper-progress)_
+_[Demo and API Docs](https://elements.polymer-project.org/elements/paper-linear-progress)_
 
 
 ##&lt;paper-progress&gt;
