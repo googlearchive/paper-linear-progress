@@ -1,5 +1,5 @@
 {
-  "name": "paper-progress",
+  "name": "paper-linear-progress",
   "version": "1.0.7",
   "license": "http://polymer.github.io/LICENSE.txt",
   "description": "A material design progress bar",
