@@ -1,4 +1,8 @@
-<!--
+import '../polymer/polymer.js';
+import '../iron-range-behavior/iron-range-behavior.js';
+import '../paper-styles/color.js';
+import '../iron-flex-layout/iron-flex-layout.js';
+/**
 @license
 Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
 This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
@@ -6,14 +10,8 @@ The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../iron-range-behavior/iron-range-behavior.html">
-<link rel="import" href="../paper-styles/color.html">
-<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
-
-<!--
+*/
+/**
 Material design: [Progress & activity](https://www.google.com/design/spec/components/progress-activity.html)
 
 The progress bars are for situations where the percentage completed can be
@@ -78,10 +76,9 @@ Custom property                               | Description                     
 @element paper-progress
 @hero hero.svg
 @demo demo/index.html
--->
-
-<dom-module id="paper-progress">
-  <template>
+*/
+Polymer({
+  _template: Polymer.html`
     <style>
       :host {
         display: block;
@@ -238,105 +235,101 @@ Custom property                               | Description                     
     </style>
 
     <div id="progressContainer">
-      <div id="secondaryProgress" hidden$="[[_hideSecondaryProgress(secondaryRatio)]]"></div>
+      <div id="secondaryProgress" hidden\$="[[_hideSecondaryProgress(secondaryRatio)]]"></div>
       <div id="primaryProgress"></div>
     </div>
-  </template>
-</dom-module>
+`,
 
-<script>
-  Polymer({
-    is: 'paper-progress',
+  is: 'paper-progress',
 
-    behaviors: [
-      Polymer.IronRangeBehavior
-    ],
+  behaviors: [
+    Polymer.IronRangeBehavior
+  ],
 
-    properties: {
-      /**
-       * The number that represents the current secondary progress.
-       */
-      secondaryProgress: {
-        type: Number,
-        value: 0
-      },
-
-      /**
-       * The secondary ratio
-       */
-      secondaryRatio: {
-        type: Number,
-        value: 0,
-        readOnly: true
-      },
-
-      /**
-       * Use an indeterminate progress indicator.
-       */
-      indeterminate: {
-        type: Boolean,
-        value: false,
-        observer: '_toggleIndeterminate'
-      },
-
-      /**
-       * True if the progress is disabled.
-       */
-      disabled: {
-        type: Boolean,
-        value: false,
-        reflectToAttribute: true,
-        observer: '_disabledChanged'
-      }
+  properties: {
+    /**
+     * The number that represents the current secondary progress.
+     */
+    secondaryProgress: {
+      type: Number,
+      value: 0
     },
 
-    observers: [
-      '_progressChanged(secondaryProgress, value, min, max)'
-    ],
-
-    hostAttributes: {
-      role: 'progressbar'
+    /**
+     * The secondary ratio
+     */
+    secondaryRatio: {
+      type: Number,
+      value: 0,
+      readOnly: true
     },
 
-    _toggleIndeterminate: function(indeterminate) {
-      // If we use attribute/class binding, the animation sometimes doesn't translate properly
-      // on Safari 7.1. So instead, we toggle the class here in the update method.
-      this.toggleClass('indeterminate', indeterminate, this.$.primaryProgress);
+    /**
+     * Use an indeterminate progress indicator.
+     */
+    indeterminate: {
+      type: Boolean,
+      value: false,
+      observer: '_toggleIndeterminate'
     },
 
-    _transformProgress: function(progress, ratio) {
-      var transform = 'scaleX(' + (ratio / 100) + ')';
-      progress.style.transform = progress.style.webkitTransform = transform;
-    },
-
-    _mainRatioChanged: function(ratio) {
-      this._transformProgress(this.$.primaryProgress, ratio);
-    },
-
-    _progressChanged: function(secondaryProgress, value, min, max) {
-      secondaryProgress = this._clampValue(secondaryProgress);
-      value = this._clampValue(value);
-
-      var secondaryRatio = this._calcRatio(secondaryProgress) * 100;
-      var mainRatio = this._calcRatio(value) * 100;
-
-      this._setSecondaryRatio(secondaryRatio);
-      this._transformProgress(this.$.secondaryProgress, secondaryRatio);
-      this._transformProgress(this.$.primaryProgress, mainRatio);
-
-      this.secondaryProgress = secondaryProgress;
-
-      this.setAttribute('aria-valuenow', value);
-      this.setAttribute('aria-valuemin', min);
-      this.setAttribute('aria-valuemax', max);
-    },
-
-    _disabledChanged: function(disabled) {
-      this.setAttribute('aria-disabled', disabled ? 'true' : 'false');
-    },
-
-    _hideSecondaryProgress: function(secondaryRatio) {
-      return secondaryRatio === 0;
+    /**
+     * True if the progress is disabled.
+     */
+    disabled: {
+      type: Boolean,
+      value: false,
+      reflectToAttribute: true,
+      observer: '_disabledChanged'
     }
-  });
-</script>
+  },
+
+  observers: [
+    '_progressChanged(secondaryProgress, value, min, max)'
+  ],
+
+  hostAttributes: {
+    role: 'progressbar'
+  },
+
+  _toggleIndeterminate: function(indeterminate) {
+    // If we use attribute/class binding, the animation sometimes doesn't translate properly
+    // on Safari 7.1. So instead, we toggle the class here in the update method.
+    this.toggleClass('indeterminate', indeterminate, this.$.primaryProgress);
+  },
+
+  _transformProgress: function(progress, ratio) {
+    var transform = 'scaleX(' + (ratio / 100) + ')';
+    progress.style.transform = progress.style.webkitTransform = transform;
+  },
+
+  _mainRatioChanged: function(ratio) {
+    this._transformProgress(this.$.primaryProgress, ratio);
+  },
+
+  _progressChanged: function(secondaryProgress, value, min, max) {
+    secondaryProgress = this._clampValue(secondaryProgress);
+    value = this._clampValue(value);
+
+    var secondaryRatio = this._calcRatio(secondaryProgress) * 100;
+    var mainRatio = this._calcRatio(value) * 100;
+
+    this._setSecondaryRatio(secondaryRatio);
+    this._transformProgress(this.$.secondaryProgress, secondaryRatio);
+    this._transformProgress(this.$.primaryProgress, mainRatio);
+
+    this.secondaryProgress = secondaryProgress;
+
+    this.setAttribute('aria-valuenow', value);
+    this.setAttribute('aria-valuemin', min);
+    this.setAttribute('aria-valuemax', max);
+  },
+
+  _disabledChanged: function(disabled) {
+    this.setAttribute('aria-disabled', disabled ? 'true' : 'false');
+  },
+
+  _hideSecondaryProgress: function(secondaryRatio) {
+    return secondaryRatio === 0;
+  }
+});
